@@ -1,15 +1,16 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { 
-    Box, Flex, HStack, Button, useDisclosure, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, VStack, Avatar, Text, Spinner 
+    Box, Flex, HStack, Button, useDisclosure, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, VStack, Avatar, Text, Spinner, useColorMode, Icon 
 } from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { colorMode, toggleColorMode } = useColorMode(); // Hook to toggle color mode
 
     // Function to fetch user details
     const fetchUserDetails = () => {
@@ -80,6 +81,16 @@ function Navbar() {
                             <Button onClick={handleLogout} colorScheme="red" variant="solid" size="lg">Logout</Button>
                         </HStack>
                     )}
+
+                    {/* Dark Mode Toggle Button */}
+                    <IconButton
+                        icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                        aria-label="Toggle Dark Mode"
+                        onClick={toggleColorMode}
+                        color="white"
+                        variant="ghost"
+                        _hover={{ bg: "blue.600" }}
+                    />
                 </HStack>
 
                 <IconButton size="md" icon={<HamburgerIcon />} aria-label="Open Menu" display={{ base: "flex", md: "none" }} onClick={onOpen} color="white" _hover={{ bg: "blue.600" }} />
@@ -110,6 +121,16 @@ function Navbar() {
                                     <Button onClick={() => { handleLogout(); onClose(); }} colorScheme="red" variant="solid" size="lg">Logout</Button>
                                 </VStack>
                             )}
+
+                            {/* Dark Mode Toggle Button in Drawer */}
+                            <IconButton
+                                icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                                aria-label="Toggle Dark Mode"
+                                onClick={toggleColorMode}
+                                color="white"
+                                variant="ghost"
+                                _hover={{ bg: "blue.600" }}
+                            />
                         </VStack>
                     </DrawerContent>
                 </DrawerOverlay>
@@ -119,3 +140,4 @@ function Navbar() {
 }
 
 export default Navbar;
+
